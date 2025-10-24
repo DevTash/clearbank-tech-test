@@ -9,6 +9,7 @@ namespace ClearBank.DeveloperTest.Tests.Services
 {
     public class PaymentService_MakePayment
     {
+        private readonly IDataStoreFactory _dataStoreFactory;
         private readonly IDataStore _dataStore;
         private readonly IPaymentRequestValidator _paymentRequestValidator;
         private readonly PaymentService _sut;
@@ -16,8 +17,12 @@ namespace ClearBank.DeveloperTest.Tests.Services
         public PaymentService_MakePayment()
         {
             _dataStore = Substitute.For<IDataStore>();
+            _dataStoreFactory = Substitute.For<IDataStoreFactory>();
             _paymentRequestValidator = Substitute.For<IPaymentRequestValidator>();
-            _sut = new PaymentService();
+            
+            _dataStoreFactory.Get().Returns(_dataStore);
+            
+            _sut = new PaymentService(_dataStoreFactory);
         }
 
         [Fact]
