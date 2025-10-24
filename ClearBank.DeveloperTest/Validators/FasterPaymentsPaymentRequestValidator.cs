@@ -2,7 +2,7 @@ using ClearBank.DeveloperTest.Types;
 
 namespace ClearBank.DeveloperTest.Validators
 {
-    public class FasterPaymentsPaymentRequestValidator :BasePaymentRequestValidator
+    public class FasterPaymentsPaymentRequestValidator : BasePaymentRequestValidator, IPaymentRequestValidator
     {
         public FasterPaymentsPaymentRequestValidator() : base(AllowedPaymentSchemes.FasterPayments)
         {

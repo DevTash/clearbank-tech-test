@@ -1,3 +1,4 @@
+using System;
 using ClearBank.DeveloperTest.Types;
 
 namespace ClearBank.DeveloperTest.Validators
@@ -8,10 +9,10 @@ namespace ClearBank.DeveloperTest.Validators
         {
             return paymentScheme switch
             {
-                PaymentScheme.Bacs => (IPaymentRequestValidator) new BacsPaymentRequestValidator(),
-                PaymentScheme.FasterPayments => (IPaymentRequestValidator) new FasterPaymentsPaymentRequestValidator(),
-                PaymentScheme.Chaps => (IPaymentRequestValidator) new ChapsPaymentRequestValidator(),
-                _ => null
+                PaymentScheme.Bacs => new BacsPaymentRequestValidator(),
+                PaymentScheme.FasterPayments => new FasterPaymentsPaymentRequestValidator(),
+                PaymentScheme.Chaps => new ChapsPaymentRequestValidator(),
+                _ => throw new NotSupportedException($"Payment scheme {paymentScheme} is not supported")
             };
         }
     }

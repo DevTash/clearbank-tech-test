@@ -1,4 +1,5 @@
 using ClearBank.DeveloperTest.Config;
+using ClearBank.DeveloperTest.Types;
 using Microsoft.Extensions.Options;
 
 namespace ClearBank.DeveloperTest.Data

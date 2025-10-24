@@ -4,6 +4,6 @@
     {
         FasterPayments,
         Bacs,
-        Chaps
+        Chaps,
     }
 }

@@ -2,7 +2,7 @@ using ClearBank.DeveloperTest.Types;
 
 namespace ClearBank.DeveloperTest.Validators
 {
-    public class ChapsPaymentRequestValidator : BasePaymentRequestValidator
+    public class ChapsPaymentRequestValidator : BasePaymentRequestValidator, IPaymentRequestValidator
     {
         public ChapsPaymentRequestValidator() : base(AllowedPaymentSchemes.Chaps)
         {

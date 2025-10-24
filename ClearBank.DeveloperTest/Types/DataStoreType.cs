@@ -1,4 +1,4 @@
-namespace ClearBank.DeveloperTest.Data
+namespace ClearBank.DeveloperTest.Types
 {
     public class DataStoreType
     {
