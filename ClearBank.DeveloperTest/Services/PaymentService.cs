@@ -1,4 +1,4 @@
-﻿using ClearBank.DeveloperTest.Data;
+using ClearBank.DeveloperTest.Data;
 using ClearBank.DeveloperTest.Types;
 using ClearBank.DeveloperTest.Validators;
 
@@ -20,7 +20,8 @@ namespace ClearBank.DeveloperTest.Services
 
         public MakePaymentResult MakePayment(MakePaymentRequest request)
         {
-            var account = _dataStoreFactory.Get().GetAccount(request.DebtorAccountNumber);
+            var dataStore = _dataStoreFactory.Get();
+            var account = dataStore.GetAccount(request.DebtorAccountNumber);
             var validator = _paymentRequestValidatorFactory.Get(request.PaymentScheme);
 
             var result = new MakePaymentResult();
@@ -29,7 +30,7 @@ namespace ClearBank.DeveloperTest.Services
             if (result.Success)
             {
                 account.Balance -= request.Amount;
-                _dataStoreFactory.Get().UpdateAccount(account);
+                dataStore.Get().UpdateAccount(account);
             }
 
             return result;
