@@ -4,6 +4,6 @@ namespace ClearBank.DeveloperTest.Validators
 {
     public interface IPaymentRequestValidator
     {
-        bool IsValid(Account account, MakePaymentRequest request = null);
+        bool IsValid(Account account, MakePaymentRequest request);
     }
 }
