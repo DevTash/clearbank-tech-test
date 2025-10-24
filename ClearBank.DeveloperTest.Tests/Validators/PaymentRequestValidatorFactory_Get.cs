@@ -39,13 +39,11 @@ namespace ClearBank.DeveloperTest.Tests.Validators
         }
 
         [Fact]
-        public void Should_Throw_When_PaymentScheme_Is_Not_Supported()
+        public void Should_Return_Null_When_Unsupported_Payment_Scheme()
         {
-            Action act = () => _sut.Get((PaymentScheme) 999);
-
-            act.Should()
-                .Throw<NotSupportedException>()
-                .WithMessage("Payment scheme 999 is not supported");
+            _sut.Get((PaymentScheme)999)
+                .Should()
+                .BeNull();
         }
     }
 }
