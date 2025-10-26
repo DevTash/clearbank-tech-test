@@ -73,6 +73,18 @@ namespace ClearBank.DeveloperTest.Tests.Services
         }
 
         [Fact]
+        public void Should_Return_Success_Result_When_There_Is_No_Validator()
+        {
+            var accountNumber = "ValidAccountNumber";
+            _dataStore.GetAccount(Arg.Any<string>()).Returns(new Account());           
+            _paymentRequestValidatorFactory.Get(Arg.Any<PaymentScheme>()).Returns((IPaymentRequestValidator) null);
+
+            var result = _sut.MakePayment(new MakePaymentRequest { DebtorAccountNumber = accountNumber });
+
+            result.Success.Should().BeTrue();
+        }
+
+        [Fact]
         public void Should_Return_Success_Result_When_Payment_Request_Validation_Passes()
         {
             var accountNumber = "ValidAccountNumber";
