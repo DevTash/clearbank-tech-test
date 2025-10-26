@@ -25,7 +25,7 @@ namespace ClearBank.DeveloperTest.Services
             var validator = _paymentRequestValidatorFactory.Get(request.PaymentScheme);
 
             var result = new MakePaymentResult();
-            result.Success = validator?.IsValid(account, request) ?? false;
+            result.Success = validator?.IsValid(account, request) ?? true;
             
             if (result.Success)
             {
