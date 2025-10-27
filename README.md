@@ -1,6 +1,16 @@
 # ClearBank Developer Test - Refactoring
 
 - [.NET 8+ (SDK 8.0.415 | Runtime 8.0.21)](https://dotnet.microsoft.com/en-us/download)
+## Get Started
+Clone repo or use a [GitHub Codespace](https://github.com/features/codespaces)
+
+```
+TERMINAL
+------------
+dotnet build
+dotnet test
+```
+
 
 ## Approach
 The purpose of this exercise was to refactor existing code to improve testability, readability and maintainability. I focused on changes that would not alter the current behavior of the code.
