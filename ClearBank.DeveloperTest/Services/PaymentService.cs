@@ -6,11 +6,11 @@ namespace ClearBank.DeveloperTest.Services
 {
     public class PaymentService : IPaymentService
     {
-        private readonly IDataStoreFactory _dataStoreFactory;
+        private readonly IAccountDataStoreFactory _dataStoreFactory;
         private readonly IPaymentRequestValidatorFactory _paymentRequestValidatorFactory;
 
         public PaymentService(
-            IDataStoreFactory dataStoreFactory,
+            IAccountDataStoreFactory dataStoreFactory,
             IPaymentRequestValidatorFactory paymentRequestValidatorFactory
         )
         {

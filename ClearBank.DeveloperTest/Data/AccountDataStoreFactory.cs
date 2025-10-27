@@ -4,16 +4,16 @@ using Microsoft.Extensions.Options;
 
 namespace ClearBank.DeveloperTest.Data
 {
-    public class DataStoreFactory
+    public class AccountDataStoreFactory
     {
         private readonly AppSettings _appSettings;
 
-        public DataStoreFactory(IOptions<AppSettings> appSettings)
+        public AccountDataStoreFactory(IOptions<AppSettings> appSettings)
         {
             _appSettings = appSettings.Value;
         }
 
-        public IDataStore Get()
+        public IAccountDataStore Get()
         {
             return _appSettings.DataStoreType switch
             {

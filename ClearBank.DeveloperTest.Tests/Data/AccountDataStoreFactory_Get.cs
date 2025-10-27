@@ -6,7 +6,7 @@ using Microsoft.Extensions.Options;
 
 namespace ClearBank.DeveloperTest.Tests.Data
 {
-    public class DataStoreFactory_Get
+    public class AccountDataStoreFactory_Get
     {
         [Fact]
         public void Should_Return_BackupAccountDataStore_When_DataStoreType_Is_Backup()
@@ -15,7 +15,7 @@ namespace ClearBank.DeveloperTest.Tests.Data
             {
                 DataStoreType = DataStoreType.Backup
             });
-            var factory = new DataStoreFactory(appSettings);
+            var factory = new AccountDataStoreFactory(appSettings);
 
             var dataStore = factory.Get();
 
@@ -29,7 +29,7 @@ namespace ClearBank.DeveloperTest.Tests.Data
             {
                 DataStoreType = "SomeOtherType"
             });
-            var factory = new DataStoreFactory(appSettings);
+            var factory = new AccountDataStoreFactory(appSettings);
 
             var dataStore = factory.Get();
 
