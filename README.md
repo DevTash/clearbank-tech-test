@@ -11,9 +11,10 @@ The purpose of this exercise was to refactor existing code to improve testabilit
 #### Completed
 - [X] **Add unit tests** - To validate behavior has not changed during refactoring
 - [X] **Strongly typed app settings** - IOptions, single source of truth, improves testability
-- [X] **DataStoreFactory** - Decouple service from datastore, extensible, remove if/else logic
+- [X] **AccountDataStoreFactory** - Decouple service from datastore, extensible, remove if/else logic
 - [X] **PaymentScheme request validators** - Remove if/else logic, duplication
 - [X] **Payment scheme request validator factory** - Decouple the service from the validators, extensible, aid testing
+- [X] **Add AccountService** - PaymentService doesn't need to know about the account datastore + removes debiting logic
 
 #### Todo
 - [ ] **Error handling w/o changing current behavior**
