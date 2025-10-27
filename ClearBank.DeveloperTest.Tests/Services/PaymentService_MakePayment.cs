@@ -9,34 +9,30 @@ namespace ClearBank.DeveloperTest.Tests.Services
 {
     public class PaymentService_MakePayment
     {
-        private readonly IAccountDataStoreFactory _dataStoreFactory;
         private readonly IPaymentRequestValidatorFactory _paymentRequestValidatorFactory;
-        private readonly IAccountDataStore _dataStore;
+        private readonly IAccountService _accountService;
         private readonly IPaymentRequestValidator _paymentRequestValidator;
         private readonly PaymentService _sut;
 
         public PaymentService_MakePayment()
         {
-            _dataStore = Substitute.For<IAccountDataStore>();
+            _accountService = Substitute.For<IAccountService>();
             _paymentRequestValidator = Substitute.For<IPaymentRequestValidator>();
-
-            _dataStoreFactory = Substitute.For<IAccountDataStoreFactory>();
             _paymentRequestValidatorFactory = Substitute.For<IPaymentRequestValidatorFactory>();
 
-            _dataStoreFactory.Get().Returns(_dataStore);
             _paymentRequestValidatorFactory.Get(Arg.Any<PaymentScheme>()).Returns(_paymentRequestValidator);
             
-            _sut = new PaymentService(_dataStoreFactory, _paymentRequestValidatorFactory);
+            _sut = new PaymentService(_accountService, _paymentRequestValidatorFactory);
         }
 
         [Fact]
-        public void Should_Attempt_Account_Retrieval_From_DataStore()
+        public void Should_Retrieve_Account()
         {
             var accountNumber = "ValidAccountNumber";
 
             _sut.MakePayment(new MakePaymentRequest { DebtorAccountNumber = accountNumber });
 
-            _dataStore.Received(1).GetAccount(Arg.Is<string>(x => x == accountNumber));
+            _accountService.Received(1).GetAccount(Arg.Is<string>(x => x == accountNumber));
         }
 
         [Fact]
@@ -61,22 +57,45 @@ namespace ClearBank.DeveloperTest.Tests.Services
         }
 
         [Fact]
-        public void Should_Update_Account_When_Payment_Request_Passes_Validation()
+        public void Should_Not_Debit_Account_When_Payment_Request_Fails_Validation()
         {
             var accountNumber = "ValidAccountNumber";
-            _dataStore.GetAccount(Arg.Any<string>()).Returns(new Account());
+            _paymentRequestValidator.IsValid(Arg.Any<Account>(), Arg.Any<MakePaymentRequest>()).Returns(false);
+
+            _sut.MakePayment(new MakePaymentRequest { DebtorAccountNumber = accountNumber });
+
+            _accountService.DidNotReceive().DebitAccount(Arg.Any<Account>(), Arg.Any<decimal>());
+        }
+
+        [Fact]
+        public void Should_Debit_Account_When_Payment_Request_Passes_Validation()
+        {
+            var accountNumber = "ValidAccountNumber";
+            _accountService.GetAccount(Arg.Any<string>()).Returns(new Account());
             _paymentRequestValidator.IsValid(Arg.Any<Account>(), Arg.Any<MakePaymentRequest>()).Returns(true);
 
             _sut.MakePayment(new MakePaymentRequest { DebtorAccountNumber = accountNumber });
 
-            _dataStore.Received(1).UpdateAccount(Arg.Any<Account>());
+            _accountService.Received(1).DebitAccount(Arg.Any<Account>(), Arg.Any<decimal>());
+        }
+
+        [Fact]
+        public void Should_Debit_Account_When_There_Is_No_Validator()
+        {
+            var accountNumber = "ValidAccountNumber";
+            _accountService.GetAccount(Arg.Any<string>()).Returns(new Account());
+            _paymentRequestValidatorFactory.Get(Arg.Any<PaymentScheme>()).Returns((IPaymentRequestValidator)null);
+
+            _sut.MakePayment(new MakePaymentRequest { DebtorAccountNumber = accountNumber });
+
+            _accountService.Received(1).DebitAccount(Arg.Any<Account>(), Arg.Any<decimal>());
         }
 
         [Fact]
         public void Should_Return_Success_Result_When_There_Is_No_Validator()
         {
             var accountNumber = "ValidAccountNumber";
-            _dataStore.GetAccount(Arg.Any<string>()).Returns(new Account());           
+            _accountService.GetAccount(Arg.Any<string>()).Returns(new Account());           
             _paymentRequestValidatorFactory.Get(Arg.Any<PaymentScheme>()).Returns((IPaymentRequestValidator) null);
 
             var result = _sut.MakePayment(new MakePaymentRequest { DebtorAccountNumber = accountNumber });
@@ -88,7 +107,7 @@ namespace ClearBank.DeveloperTest.Tests.Services
         public void Should_Return_Success_Result_When_Payment_Request_Validation_Passes()
         {
             var accountNumber = "ValidAccountNumber";
-            _dataStore.GetAccount(Arg.Any<string>()).Returns(new Account());
+            _accountService.GetAccount(Arg.Any<string>()).Returns(new Account());
             _paymentRequestValidator.IsValid(Arg.Any<Account>(), Arg.Any<MakePaymentRequest>()).Returns(true);
 
             var result = _sut.MakePayment(new MakePaymentRequest { DebtorAccountNumber = accountNumber });
